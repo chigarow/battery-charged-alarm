@@ -1,0 +1,25 @@
+<resources>
+    <color name="amoled_black">#000000</color>
+    <color name="surface_dark">#101017</color>
+    <color name="surface_variant_dark">#1B1A22</color>
+    <color name="surface_card">#16141D</color>
+    <color name="border_dark">#2D2A37</color>
+
+    <color name="text_primary_dark">#F5F5F7</color>
+    <color name="text_secondary_dark">#C3C6D2</color>
+    <color name="text_muted_dark">#8B8FA3</color>
+
+    <color name="accent_primary">#A889FF</color>
+    <color name="accent_primary_variant">#7C4DFF</color>
+    <color name="accent_secondary">#64FFDA</color>
+    <color name="accent_warning">#FF8A80</color>
+    <color name="slider_inactive">#3A3447</color>
+    <color name="chip_bg_dark">#252332</color>
+
+    <color name="status_enabled_bg">#0F3B2E</color>
+    <color name="status_disabled_bg">#2B1E3C</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="ic_launcher_background">#0A1F44</color>
+</resources>

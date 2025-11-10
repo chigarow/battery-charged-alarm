@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+**/build/
+local.properties
+.gradle
+
+# Android Studio
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Generated
+app/generated/
+.history/
+AGENTS.md
+app/build/
