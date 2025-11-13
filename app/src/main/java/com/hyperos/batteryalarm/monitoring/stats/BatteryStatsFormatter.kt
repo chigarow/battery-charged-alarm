@@ -15,7 +15,24 @@ data class BatteryStatsSnapshot(
         get() = voltageMillivolts?.takeIf { it > 0 }?.div(1000.0)
 
     val currentAmps: Double?
-        get() = currentMicroAmps?.div(1_000_000.0)
+        get() {
+            if (currentMicroAmps == null) return null
+
+            val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                status == BatteryManager.BATTERY_STATUS_FULL
+            var current = currentMicroAmps.toDouble()
+
+            // Correct for devices that report negative current when charging
+            if (isCharging && current < 0) {
+                current *= -1.0
+            }
+            // Correct for devices that report positive current when discharging
+            else if (status == BatteryManager.BATTERY_STATUS_DISCHARGING && current > 0) {
+                current *= -1.0
+            }
+
+            return current / 1_000_000.0
+        }
 
     val powerWatts: Double?
         get() {
