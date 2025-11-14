@@ -44,12 +44,6 @@ class BatteryStatsService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action == ACTION_STOP_SERVICE) {
-            repository.setStatsMonitoringEnabled(false)
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
         repository.setStatsMonitoringEnabled(true)
         val initialNotification = buildNotification(null)
         startForeground(NOTIFICATION_ID, initialNotification)
@@ -109,13 +103,6 @@ class BatteryStatsService : Service() {
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or mutablePendingFlag()
         )
-        val stopIntent = PendingIntent.getService(
-            this,
-            1,
-            Intent(this, BatteryStatsService::class.java).setAction(ACTION_STOP_SERVICE),
-            PendingIntent.FLAG_UPDATE_CURRENT or mutablePendingFlag()
-        )
-
         val contentText = snapshot?.let {
             BatteryStatsFormatter.formatContent(this, it)
         } ?: getString(R.string.stats_notification_initial)
@@ -127,11 +114,6 @@ class BatteryStatsService : Service() {
             .setSmallIcon(R.drawable.ic_stat_battery_alarm)
             .setOngoing(true)
             .setContentIntent(contentIntent)
-            .addAction(
-                R.drawable.ic_stat_battery_alarm,
-                getString(R.string.stats_notification_action_stop),
-                stopIntent
-            )
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
@@ -167,8 +149,6 @@ class BatteryStatsService : Service() {
     companion object {
         private const val NOTIFICATION_ID = 77
         private const val NOTIFICATION_CHANNEL_ID = "battery_stats_channel"
-        private const val ACTION_STOP_SERVICE = "com.hyperos.batteryalarm.action.STOP_STATS"
-
         fun start(context: Context) {
             val intent = Intent(context, BatteryStatsService::class.java)
             ContextCompat.startForegroundService(context, intent)

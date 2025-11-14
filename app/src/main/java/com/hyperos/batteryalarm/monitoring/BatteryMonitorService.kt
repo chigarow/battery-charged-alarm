@@ -59,12 +59,6 @@ class BatteryMonitorService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action == ACTION_STOP_SERVICE) {
-            repository.setMonitoringEnabled(false)
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
         repository.setMonitoringEnabled(true)
         startForeground(NOTIFICATION_ID, buildNotification())
         registerBatteryReceiverIfNeeded()
@@ -131,19 +125,12 @@ class BatteryMonitorService : Service() {
     private fun buildNotification(triggered: Boolean = false, level: Int? = null): Notification {
         val channelId = NOTIFICATION_CHANNEL_ID
         val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
         val contentIntent = PendingIntent.getActivity(
             this,
             0,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or mutablePendingFlag()
-        )
-
-        val stopIntent = PendingIntent.getService(
-            this,
-            1,
-            Intent(this, BatteryMonitorService::class.java).setAction(ACTION_STOP_SERVICE),
             PendingIntent.FLAG_UPDATE_CURRENT or mutablePendingFlag()
         )
 
@@ -160,11 +147,6 @@ class BatteryMonitorService : Service() {
             .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             .setOngoing(true)
             .setContentIntent(contentIntent)
-            .addAction(
-                R.drawable.ic_stat_battery_alarm,
-                getString(R.string.notification_action_stop),
-                stopIntent
-            )
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
@@ -209,8 +191,6 @@ class BatteryMonitorService : Service() {
     companion object {
         private const val NOTIFICATION_ID = 42
         private const val NOTIFICATION_CHANNEL_ID = "battery_monitor_channel"
-        private const val ACTION_STOP_SERVICE = "com.hyperos.batteryalarm.action.STOP"
-
         fun start(context: Context) {
             val intent = Intent(context, BatteryMonitorService::class.java)
             ContextCompat.startForegroundService(context, intent)

@@ -34,12 +34,10 @@
     <string name="notification_title">Battery alarm monitoring</string>
     <string name="notification_text_monitoring">Watching for %1$d%% while charging</string>
     <string name="notification_text_triggered">Alarm played at %1$d%%</string>
-    <string name="notification_action_stop">Stop monitoring</string>
     <string name="stats_notification_channel_name">Battery stats</string>
     <string name="stats_notification_channel_description">Shows a persistent notification with live voltage, amperage, temperature, and watt output.</string>
     <string name="stats_notification_title">Real-time battery stats</string>
     <string name="stats_notification_initial">Collecting the latest voltage and temperature data…</string>
-    <string name="stats_notification_action_stop">Stop stats</string>
     <string name="stats_segment_temperature">Temp: %1$s°C</string>
     <string name="stats_segment_power">Power: %1$sW</string>
     <string name="stats_segment_voltage">Voltage: %1$sV</string>
